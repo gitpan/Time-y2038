@@ -1,0 +1,38 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 10f0775785ab7b9e2d083482baaa49300b477a7d Build.PL
+SHA1 13499fbb2870e1d0825e5beca0e207e185b4d825 Changes
+SHA1 18852988327845bcf65470ba5f4d79ae6bb18fc1 MANIFEST
+SHA1 d841a9e7ab34d66c376919ca34775395fabfdb69 META.yml
+SHA1 dce5ad497523a7d37f97f7b15e7786a965b947cf lib/Time/y2038.pm
+SHA1 73fe44644bb5f544eb4a508a4359f4e408da327d lib/Time/y2038.xs
+SHA1 c5765f7f06817f9211daf78088389075c89caa07 lib/Time/y2038/Everywhere.pm
+SHA1 a5cff4fb987cff698bf2523ce2fb68178dd5f1b4 munge_config
+SHA1 2997ee7e8bed8f51793ff239c094bd1838d12e06 t/everywhere.t
+SHA1 a9dd5089dd4bfae40c9cfa72d2bcb7be7f46591a t/time.t
+SHA1 cbe5b6fb6257e9d59307b5f4252a05796bec7f63 t/timegm.t
+SHA1 a915486e0da8713dead77ca21d041c8ae6b6676e typemap
+SHA1 539266841d3a21e4d584ab18ff638a0eb3738bac y2038/time64.c
+SHA1 c0dfb7f4e4dca8eaa3a28bbe0b680ebd36eaf722 y2038/time64.h
+SHA1 d69a9708be75fd536106d723d171326dc4fd44ec y2038/time64_config.h.in
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (Darwin)
+
+iEYEARECAAYFAkj8MmUACgkQWMohlhD1QydxoQCgqlIPvJtteT9blmkoUJGvmfFp
+JvAAn2Mo3iR6C04fXoI/bDOMkTfNBQKI
+=xg6l
+-----END PGP SIGNATURE-----

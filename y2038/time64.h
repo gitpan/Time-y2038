@@ -1,9 +1,8 @@
-#include <time.h>
-#include "time64_config.h"
-
 #ifndef TIME64_H
 #    define TIME64_H
 
+#include <time.h>
+#include "time64_config.h"
 
 /* Set our custom types */
 typedef INT_64_T        Int64;
@@ -44,9 +43,14 @@ struct TM64 {
 /* Declare public functions */
 struct TM *gmtime64_r    (const Time64_T *, struct TM *);
 struct TM *localtime64_r (const Time64_T *, struct TM *);
-
 struct TM *gmtime64      (const Time64_T *);
 struct TM *localtime64   (const Time64_T *);
+
+char *asctime64          (const struct TM *);
+char *asctime64_r        (const struct TM *, char *);
+
+char *ctime64            (const Time64_T*);
+char *ctime64_r          (const Time64_T*, char*);
 
 Time64_T   timegm64      (const struct TM *);
 Time64_T   mktime64      (const struct TM *);

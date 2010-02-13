@@ -19,20 +19,17 @@ my $build = Local::Module::Build->new(
 
 #    extra_compiler_flags => "-g -Wall -ansi -pedantic -Wno-long-long -Wextra -Wdeclaration-after-statement -Wendif-labels -Wconversion",
 
-    PL_files => {
-        'munge_config'  => 'y2038/time64_config.h'
-    },
-
     configure_requires  => {
         'Module::Build'         => '0.2808',
     },
 
     build_requires      => {
-        'Module::Build'         => '0.2808',
+        'Module::Build'         => '0.2809',    # for ->cbuilder()
         'Test::Warn'            => '0.11',
         'Test::Exception'       => '0.27',
-        'Test::More'            => 0.62,
+        'Test::More'            => 0.82,
         'ExtUtils::CBuilder'    => 0.24,
+        'JSON::XS'              => 2.26,
     },
 
     requires            => {

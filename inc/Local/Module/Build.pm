@@ -4,7 +4,13 @@ use strict;
 use base qw(Module::Build);
 
 use ExtUtils::CBuilder;
-use JSON::XS;
+use JSON;
+
+sub is_osx_106 {
+    return 0 unless $^O eq 'darwin';
+    my $version = `sw_vers -productVersion`;
+    return $version =~ m{^10\.6\.};
+}
 
 sub probe_system_time {
     my $self = shift;
@@ -87,9 +93,15 @@ END
         print $fh $code;
         close $fh;
 
-        my $obj = eval { $cb->compile(source => "try.c"); };
-        $self->notes($test, $obj ? 1 : 0);
-        unlink $obj if $obj;
+        my $exe = eval {
+            # Compile AND link to force undefined symbols to error
+            my $obj = $cb->compile(source => "try.c");
+            my $exe = $cb->link_executable(objects => $obj, exe_file => "try");
+            unlink $obj;
+            $exe;
+        };
+        $self->notes($test, $exe ? 1 : 0);
+        unlink $exe if $exe;
         unlink "try.c";
     }
 }
@@ -116,7 +128,7 @@ sub note_time_limits {
 
     my $json = `./$exe`;
     $json =~ s{^\#.*\n}{}gm;
-    my $limits = decode_json($json);
+    my $limits = from_json($json);
 
     warn "  Done.\n";
 
@@ -141,6 +153,16 @@ sub note_time_limits {
     for my $key (qw(gmtime_min localtime_min)) {
         if( -10_000 < $config{$key} && $config{$key} < 0 ) {
             $config{$key} = 0;
+        }
+    }
+
+    # OS X 10.6's gmtime is broken before -70546986201600
+    # See Apple bug 7654647
+    if( is_osx_106 ) {
+        for my $key (qw(gmtime_min localtime_min)) {
+            if( $config{$key} < -70546986201600 ) {
+                $config{$key} = -70546986201600;
+            }
         }
     }
 

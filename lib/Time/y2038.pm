@@ -6,7 +6,7 @@ use warnings;
 use base qw(Exporter);
 use XSLoader;
 
-our $VERSION = '20100225';
+our $VERSION = '20100403';
 our @EXPORT = qw(localtime gmtime timegm timelocal);
 
 XSLoader::load __PACKAGE__, $VERSION;
@@ -118,7 +118,7 @@ Michael G Schwern <schwern@pobox.com>
 
 =head1 LICENSE & COPYRIGHT
 
-Copyright 2008 Michael G Schwern
+Copyright 2008-2010 Michael G Schwern
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -131,5 +131,7 @@ See F<http://www.perl.com/perl/misc/Artistic.html>
 L<Time::y2038::Everywhere> overrides localtime() and gmtime() across the whole program.
 
 The y2038 project at F<http://y2038.googlecode.com/>
+
+L<http://xkcd.com/376/>
 
 =cut

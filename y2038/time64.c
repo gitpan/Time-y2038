@@ -1,6 +1,6 @@
 /* 
 
-Copyright (c) 2007-2008  Michael G Schwern
+Copyright (c) 2007-2010  Michael G Schwern
 
 This software originally derived from Paul Sheer's pivotal_gmtime_r.c.
 
@@ -48,96 +48,6 @@ gmtime64_r() is a 64-bit equivalent of gmtime_r().
 #include "time64.h"
 #include "time64_limits.h"
 
-struct tm SYSTEM_MKTIME_MAX = {
-SYSTEM_MKTIME_MAX_TM_SEC,
-SYSTEM_MKTIME_MAX_TM_MIN, 
-SYSTEM_MKTIME_MAX_TM_HOUR, 
-SYSTEM_MKTIME_MAX_TM_MDAY,
-SYSTEM_MKTIME_MAX_TM_MON,
-SYSTEM_MKTIME_MAX_TM_YEAR,
-SYSTEM_MKTIME_MAX_TM_WDAY,
-SYSTEM_MKTIME_MAX_TM_YDAY,
-SYSTEM_MKTIME_MAX_TM_ISDST
-#ifdef HAS_TM_TM_GMTOFF
-,SYSTEM_MKTIME_MAX_TM_GMTOFF
-#else
-,0
-#endif
-#ifdef HAS_TM_TM_ZONE
-,SYSTEM_MKTIME_MAX_TM_ZONE
-#else
-,""
-#endif
-};
-
-const struct tm SYSTEM_MKTIME_MIN = {
-SYSTEM_MKTIME_MIN_TM_SEC,
-SYSTEM_MKTIME_MIN_TM_MIN, 
-SYSTEM_MKTIME_MIN_TM_HOUR, 
-SYSTEM_MKTIME_MIN_TM_MDAY,
-SYSTEM_MKTIME_MIN_TM_MON,
-SYSTEM_MKTIME_MIN_TM_YEAR,
-SYSTEM_MKTIME_MIN_TM_WDAY,
-SYSTEM_MKTIME_MIN_TM_YDAY,
-SYSTEM_MKTIME_MIN_TM_ISDST
-#ifdef HAS_TM_TM_GMTOFF
-,SYSTEM_MKTIME_MIN_TM_GMTOFF
-#else
-,0
-#endif
-#ifdef HAS_TM_TM_ZONE
-,SYSTEM_MKTIME_MIN_TM_ZONE
-#else
-,""
-#endif
-};
-
-#ifdef HAS_TIMEGM
-const struct tm SYSTEM_TIMEGM_MAX = {
-SYSTEM_TIMEGM_MAX_TM_SEC,
-SYSTEM_TIMEGM_MAX_TM_MIN, 
-SYSTEM_TIMEGM_MAX_TM_HOUR, 
-SYSTEM_TIMEGM_MAX_TM_MDAY,
-SYSTEM_TIMEGM_MAX_TM_MON,
-SYSTEM_TIMEGM_MAX_TM_YEAR,
-SYSTEM_TIMEGM_MAX_TM_WDAY,
-SYSTEM_TIMEGM_MAX_TM_YDAY,
-SYSTEM_TIMEGM_MAX_TM_ISDST
-#ifdef HAS_TM_TM_GMTOFF
-,SYSTEM_TIMEGM_MAX_TM_GMTOFF
-#else
-,0
-#endif
-#ifdef HAS_TM_TM_ZONE
-,SYSTEM_TIMEGM_MAX_TM_ZONE
-#else
-,""
-#endif
-};
-
-const struct tm SYSTEM_TIMEGM_MIN = {
-SYSTEM_TIMEGM_MIN_TM_SEC,
-SYSTEM_TIMEGM_MIN_TM_MIN, 
-SYSTEM_TIMEGM_MIN_TM_HOUR, 
-SYSTEM_TIMEGM_MIN_TM_MDAY,
-SYSTEM_TIMEGM_MIN_TM_MON,
-SYSTEM_TIMEGM_MIN_TM_YEAR,
-SYSTEM_TIMEGM_MIN_TM_WDAY,
-SYSTEM_TIMEGM_MIN_TM_YDAY,
-SYSTEM_TIMEGM_MIN_TM_ISDST
-#ifdef HAS_TM_TM_GMTOFF
-,SYSTEM_TIMEGM_MIN_TM_GMTOFF
-#else
-,0
-#endif
-#ifdef HAS_TM_TM_ZONE
-,SYSTEM_TIMEGM_MIN_TM_ZONE
-#else
-,""
-#endif
-};
-#endif /* HAS_TIMEGM */
-
 
 /* Spec says except for stftime() and the _r() functions, these
    all return static memory.  Stabbings! */
@@ -154,11 +64,11 @@ static const int julian_days_by_month[2][12] = {
     {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335},
 };
 
-static char wday_name[7][3] = {
+static char wday_name[7][4] = {
     "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
 };
 
-static char mon_name[12][3] = {
+static char mon_name[12][4] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
@@ -895,6 +805,7 @@ char *ctime64_r( const Time64_T* time, char* result ) {
 
 /* Non-thread safe versions of the above */
 struct TM *localtime64(const Time64_T *time) {
+    tzset();
     return localtime64_r(time, &Static_Return_Date);
 }
 
@@ -907,5 +818,6 @@ char *asctime64( const struct TM* date ) {
 }
 
 char *ctime64( const Time64_T* time ) {
+    tzset();
     return asctime64(localtime64(time));
 }
